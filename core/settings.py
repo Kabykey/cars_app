@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-l0xbne-)x#v*v1t%=z&hw1w591=*u0=e%&0726b_uhvrfn^oez
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -128,5 +128,6 @@ AUTH_USER_MODEL = 'cars_app.CustomUser'
 
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 1
+    'PAGE_SIZE': 1,
+    'DEFAULT_AUTHENTICATION_CLASSES':['rest_framework.authentication.SessionAuthentication']
 }

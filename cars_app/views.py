@@ -58,6 +58,7 @@ class CarsFilterApiView(APIView):
     permission_classes = [AllowAny]
 
     def get(self, request):
+        name=request.GET.get('name')
         cars_type=request.GET.get('cars_type')
         cars_year=request.GET.get('years')
         cars_country=request.GET.get('country')
@@ -65,6 +66,8 @@ class CarsFilterApiView(APIView):
         max_price=request.GET.get('max_price')
 
         cars=Advertise.objects.all()
+        if name is not None:
+            cars=cars.filter(name=name)
         if cars_type is not None:
             cars = cars.filter(cars_type=cars_type)
         if cars_year is not None:
@@ -111,7 +114,13 @@ class AuthorsApiView(APIView):
         return Response(data=updated_advertise.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request):
-        request.user.delete()
+        advertise_id = request.data.get('id')
+        if advertise_id is None:
+            return Response({'message': 'Field ID is required'}, status=status.HTTP_400_BAD_REQUEST)
+
+        from django.shortcuts import get_object_or_404
+        advertise = get_object_or_404(Advertise, id=advertise_id)
+        advertise.delete()
         return Response(data={'message': 'Delete!'}, status=status.HTTP_200_OK)
 
 
